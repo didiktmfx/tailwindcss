@@ -844,6 +844,9 @@ it('The disableColorOpacityUtilities flag disables the color opacity plugins and
             class="divide-blue-300/50 border-blue-300/50 bg-blue-300/50 text-blue-300/50 placeholder-blue-300/50 ring-blue-300/50"
           ></div>
           <div
+            class="divide-blue-300/[var(--my-opacity)] border-blue-300/[var(--my-opacity)] bg-blue-300/[var(--my-opacity)] text-blue-300/[var(--my-opacity)] placeholder-blue-300/[var(--my-opacity)] ring-blue-300/[var(--my-opacity)]"
+          ></div>
+          <div
             class="divide-opacity-50 border-opacity-50 bg-opacity-50 text-opacity-50 placeholder-opacity-50 ring-opacity-50"
           ></div>
         `,
@@ -859,11 +862,17 @@ it('The disableColorOpacityUtilities flag disables the color opacity plugins and
       .divide-blue-300\/50 > :not([hidden]) ~ :not([hidden]) {
         border-color: rgb(147 197 253 / 0.5);
       }
+      .divide-blue-300\/\[var\(--my-opacity\)\] > :not([hidden]) ~ :not([hidden]) {
+        border-color: rgb(147 197 253 / var(--my-opacity));
+      }
       .border-blue-300 {
         border-color: #93c5fd;
       }
       .border-blue-300\/50 {
         border-color: rgb(147 197 253 / 0.5);
+      }
+      .border-blue-300\/\[var\(--my-opacity\)\] {
+        border-color: rgb(147 197 253 / var(--my-opacity));
       }
       .bg-blue-300 {
         background-color: #93c5fd;
@@ -871,11 +880,17 @@ it('The disableColorOpacityUtilities flag disables the color opacity plugins and
       .bg-blue-300\/50 {
         background-color: rgb(147 197 253 / 0.5);
       }
+      .bg-blue-300\/\[var\(--my-opacity\)\] {
+        background-color: rgb(147 197 253 / var(--my-opacity));
+      }
       .text-blue-300 {
         color: #93c5fd;
       }
       .text-blue-300\/50 {
         color: rgb(147 197 253 / 0.5);
+      }
+      .text-blue-300\/\[var\(--my-opacity\)\] {
+        color: rgb(147 197 253 / var(--my-opacity));
       }
       .placeholder-blue-300::placeholder {
         color: #93c5fd;
@@ -883,11 +898,17 @@ it('The disableColorOpacityUtilities flag disables the color opacity plugins and
       .placeholder-blue-300\/50::placeholder {
         color: rgb(147 197 253 / 0.5);
       }
+      .placeholder-blue-300\/\[var\(--my-opacity\)\]::placeholder {
+        color: rgb(147 197 253 / var(--my-opacity));
+      }
       .ring-blue-300 {
         --tw-ring-color: #93c5fd;
       }
       .ring-blue-300\/50 {
         --tw-ring-color: rgb(147 197 253 / 0.5);
+      }
+      .ring-blue-300\/\[var\(--my-opacity\)\] {
+        --tw-ring-color: rgb(147 197 253 / var(--my-opacity));
       }
     `)
   })
