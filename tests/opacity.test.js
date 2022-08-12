@@ -828,3 +828,67 @@ it('works with opacity values defined as a placeholder or a function in when col
     `)
   })
 })
+
+it('The disableColorOpacityUtilities flag disables the color opacity plugins and removes their variables', () => {
+  let config = {
+    future: {
+      disableColorOpacityUtilities: true,
+    },
+    content: [
+      {
+        raw: html`
+          <div
+            class="divide-blue-300 border-blue-300 bg-blue-300 text-blue-300 placeholder-blue-300 ring-blue-300"
+          ></div>
+          <div
+            class="divide-blue-300/50 border-blue-300/50 bg-blue-300/50 text-blue-300/50 placeholder-blue-300/50 ring-blue-300/50"
+          ></div>
+          <div
+            class="divide-opacity-50 border-opacity-50 bg-opacity-50 text-opacity-50 placeholder-opacity-50 ring-opacity-50"
+          ></div>
+        `,
+      },
+    ],
+  }
+
+  return run('@tailwind utilities', config).then((result) => {
+    expect(result.css).toMatchCss(css`
+      .divide-blue-300 > :not([hidden]) ~ :not([hidden]) {
+        border-color: #93c5fd;
+      }
+      .divide-blue-300\/50 > :not([hidden]) ~ :not([hidden]) {
+        border-color: rgb(147 197 253 / 0.5);
+      }
+      .border-blue-300 {
+        border-color: #93c5fd;
+      }
+      .border-blue-300\/50 {
+        border-color: rgb(147 197 253 / 0.5);
+      }
+      .bg-blue-300 {
+        background-color: #93c5fd;
+      }
+      .bg-blue-300\/50 {
+        background-color: rgb(147 197 253 / 0.5);
+      }
+      .text-blue-300 {
+        color: #93c5fd;
+      }
+      .text-blue-300\/50 {
+        color: rgb(147 197 253 / 0.5);
+      }
+      .placeholder-blue-300::placeholder {
+        color: #93c5fd;
+      }
+      .placeholder-blue-300\/50::placeholder {
+        color: rgb(147 197 253 / 0.5);
+      }
+      .ring-blue-300 {
+        --tw-ring-color: #93c5fd;
+      }
+      .ring-blue-300\/50 {
+        --tw-ring-color: rgb(147 197 253 / 0.5);
+      }
+    `)
+  })
+})

@@ -1086,11 +1086,14 @@ export let corePlugins = {
     })
   },
 
-  divideColor: ({ matchUtilities, theme, corePlugins }) => {
+  divideColor: ({ matchUtilities, theme, corePlugins, config }) => {
     matchUtilities(
       {
         divide: (value) => {
-          if (!corePlugins('divideOpacity')) {
+          if (
+            !corePlugins('divideOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               ['& > :not([hidden]) ~ :not([hidden])']: {
                 'border-color': toColorValue(value),
@@ -1114,7 +1117,11 @@ export let corePlugins = {
     )
   },
 
-  divideOpacity: ({ matchUtilities, theme }) => {
+  divideOpacity: ({ matchUtilities, theme, config }) => {
+    if (flagEnabled(config(), 'disableColorOpacityUtilities')) {
+      return
+    }
+
     matchUtilities(
       {
         'divide-opacity': (value) => {
@@ -1269,11 +1276,14 @@ export let corePlugins = {
     })
   },
 
-  borderColor: ({ matchUtilities, theme, corePlugins }) => {
+  borderColor: ({ matchUtilities, theme, corePlugins, config }) => {
     matchUtilities(
       {
         border: (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-color': toColorValue(value),
             }
@@ -1295,7 +1305,10 @@ export let corePlugins = {
     matchUtilities(
       {
         'border-x': (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-left-color': toColorValue(value),
               'border-right-color': toColorValue(value),
@@ -1309,7 +1322,10 @@ export let corePlugins = {
           })
         },
         'border-y': (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-top-color': toColorValue(value),
               'border-bottom-color': toColorValue(value),
@@ -1332,7 +1348,10 @@ export let corePlugins = {
     matchUtilities(
       {
         'border-t': (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-top-color': toColorValue(value),
             }
@@ -1345,7 +1364,10 @@ export let corePlugins = {
           })
         },
         'border-r': (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-right-color': toColorValue(value),
             }
@@ -1358,7 +1380,10 @@ export let corePlugins = {
           })
         },
         'border-b': (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-bottom-color': toColorValue(value),
             }
@@ -1371,7 +1396,10 @@ export let corePlugins = {
           })
         },
         'border-l': (value) => {
-          if (!corePlugins('borderOpacity')) {
+          if (
+            !corePlugins('borderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'border-left-color': toColorValue(value),
             }
@@ -1391,15 +1419,24 @@ export let corePlugins = {
     )
   },
 
-  borderOpacity: createUtilityPlugin('borderOpacity', [
-    ['border-opacity', ['--tw-border-opacity']],
-  ]),
+  borderOpacity: (helpers) => {
+    if (flagEnabled(helpers.config(), 'disableColorOpacityUtilities')) {
+      return
+    }
 
-  backgroundColor: ({ matchUtilities, theme, corePlugins }) => {
+    return createUtilityPlugin('borderOpacity', [['border-opacity', ['--tw-border-opacity']]])(
+      helpers
+    )
+  },
+
+  backgroundColor: ({ matchUtilities, theme, corePlugins, config }) => {
     matchUtilities(
       {
         bg: (value) => {
-          if (!corePlugins('backgroundOpacity')) {
+          if (
+            !corePlugins('backgroundOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               'background-color': toColorValue(value),
             }
@@ -1416,9 +1453,13 @@ export let corePlugins = {
     )
   },
 
-  backgroundOpacity: createUtilityPlugin('backgroundOpacity', [
-    ['bg-opacity', ['--tw-bg-opacity']],
-  ]),
+  backgroundOpacity: (helpers) => {
+    if (flagEnabled(helpers.config(), 'disableColorOpacityUtilities')) {
+      return
+    }
+
+    return createUtilityPlugin('backgroundOpacity', [['bg-opacity', ['--tw-bg-opacity']]])(helpers)
+  },
   backgroundImage: createUtilityPlugin('backgroundImage', [['bg', ['background-image']]], {
     type: ['lookup', 'image', 'url'],
   }),
@@ -1733,11 +1774,14 @@ export let corePlugins = {
     supportsNegativeValues: true,
   }),
 
-  textColor: ({ matchUtilities, theme, corePlugins }) => {
+  textColor: ({ matchUtilities, theme, corePlugins, config }) => {
     matchUtilities(
       {
         text: (value) => {
-          if (!corePlugins('textOpacity')) {
+          if (
+            !corePlugins('textOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return { color: toColorValue(value) }
           }
 
@@ -1752,7 +1796,13 @@ export let corePlugins = {
     )
   },
 
-  textOpacity: createUtilityPlugin('textOpacity', [['text-opacity', ['--tw-text-opacity']]]),
+  textOpacity: (helpers) => {
+    if (flagEnabled(helpers.config(), 'disableColorOpacityUtilities')) {
+      return
+    }
+
+    return createUtilityPlugin('textOpacity', [['text-opacity', ['--tw-text-opacity']]])(helpers)
+  },
 
   textDecoration: ({ addUtilities }) => {
     addUtilities({
@@ -1809,11 +1859,14 @@ export let corePlugins = {
     })
   },
 
-  placeholderColor: ({ matchUtilities, theme, corePlugins }) => {
+  placeholderColor: ({ matchUtilities, theme, corePlugins, config }) => {
     matchUtilities(
       {
         placeholder: (value) => {
-          if (!corePlugins('placeholderOpacity')) {
+          if (
+            !corePlugins('placeholderOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               '&::placeholder': {
                 color: toColorValue(value),
@@ -1834,7 +1887,11 @@ export let corePlugins = {
     )
   },
 
-  placeholderOpacity: ({ matchUtilities, theme }) => {
+  placeholderOpacity: ({ matchUtilities, theme, config }) => {
+    if (flagEnabled(config(), 'disableColorOpacityUtilities')) {
+      return
+    }
+
     matchUtilities(
       {
         'placeholder-opacity': (value) => {
@@ -2056,11 +2113,14 @@ export let corePlugins = {
     })
   },
 
-  ringColor: ({ matchUtilities, theme, corePlugins }) => {
+  ringColor: ({ matchUtilities, theme, corePlugins, config }) => {
     matchUtilities(
       {
         ring: (value) => {
-          if (!corePlugins('ringOpacity')) {
+          if (
+            !corePlugins('ringOpacity') ||
+            flagEnabled(config(), 'disableColorOpacityUtilities')
+          ) {
             return {
               '--tw-ring-color': toColorValue(value),
             }
@@ -2085,6 +2145,10 @@ export let corePlugins = {
   },
 
   ringOpacity: (helpers) => {
+    if (flagEnabled(helpers.config(), 'disableColorOpacityUtilities')) {
+      return
+    }
+
     let { config } = helpers
 
     return createUtilityPlugin('ringOpacity', [['ring-opacity', ['--tw-ring-opacity']]], {
